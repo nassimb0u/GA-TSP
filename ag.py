@@ -2,10 +2,9 @@ from numpy.random import default_rng
 
 from individual import Individual
 from population import Population
-from tsp import TSP, timer
 
 
-class AG(TSP):
+class AG:
     def __init__(
         self,
         graph,
@@ -14,13 +13,21 @@ class AG(TSP):
         mutation_rate=1e-3,
         stagnation_metric=5,
     ):
-        super().__init__(graph)
+        self.g = graph
         self.pop_size = population_size
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
         self.stagnation_metric = stagnation_metric
         self.rng = default_rng()
         self.init_pop = Population.create_rand(self)
+
+    @property
+    def adj_mat(self):
+        return self.g.adj_mat
+
+    @property
+    def order(self):
+        return self.g.order
 
     def crossover_prob(self):
         return self.rng.random() < self.crossover_rate
@@ -35,7 +42,6 @@ class AG(TSP):
             return counter - 1
         return self.stagnation_metric
 
-    @timer
     def solve(self):
         gen = self.init_pop
         counter = None

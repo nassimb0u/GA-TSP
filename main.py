@@ -10,9 +10,7 @@ m = [
 ]
 g = Graph(m)
 ag = AG(g, population_size=50)
-s, t = ag.solve()
-gen_count, gen = s
-print("time:", t)
+gen_count, gen = ag.solve()
 print("gen_count", gen_count)
 print(gen)
 print("best")
