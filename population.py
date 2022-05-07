@@ -6,7 +6,7 @@ from individual import Individual
 class Population:
     def __init__(self, ag):
         self.ag = ag
-        self.population = deque()
+        self.population = deque(maxlen=ag.pop_size)
         self.total_fitness = 0
         self.probas = None
 
@@ -21,6 +21,8 @@ class Population:
         return len(self.population)
 
     def insert(self, individ):
+        if len(self.population) == self.population.maxlen and len(self.population):
+            self.total_fitness -= self.population.popleft().fitness
         self.population.append(individ)
         self.total_fitness += individ.fitness
 
