@@ -1,7 +1,19 @@
+import time
+
 from numpy.random import default_rng
 
 from individual import Individual
 from population import Population
+
+
+def timer(func):
+    def wrapper_timer(*args, **kwargs):
+        tic = time.process_time()
+        value = func(*args, **kwargs)
+        toc = time.process_time()
+        return value, toc - tic
+
+    return wrapper_timer
 
 
 class AG:
@@ -42,6 +54,7 @@ class AG:
             return counter - 1
         return self.stagnation_metric
 
+    @timer
     def solve(self):
         gen = self.init_pop
         counter = None

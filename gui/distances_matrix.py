@@ -1,4 +1,5 @@
 import textwrap
+from random import randint
 from tkinter import CENTER, END, ttk
 
 
@@ -9,7 +10,7 @@ class MatrixFrame(ttk.Frame):
         sizex,
         sizey,
         label,
-        default_value="",
+        default_value=None,
         validator=lambda v: True,
         error_message="",
     ):
@@ -41,7 +42,13 @@ class MatrixFrame(ttk.Frame):
                     validate="key",
                     validatecommand=vcmd,
                 )
-                self.cells[i][j].insert(END, default_value)
+                if default_value:
+                    self.cells[i][i].insert(END, default_value)
+                else:
+                    if i == j:
+                        self.cells[i][i].insert(END, "0")
+                    else:
+                        self.cells[i][j].insert(END, str(randint(1, 100)))
                 self.cells[i][j].grid(row=i + 1, column=j)
 
     def _show_error(self, message):
@@ -58,7 +65,7 @@ class DistancesMatrix(MatrixFrame):
             size,
             size,
             "Matrice des distances",
-            "0",
+            None,
             DistancesMatrix.is_distance,
             "Veuillez entrer une distance valide",
         )

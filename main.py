@@ -23,9 +23,17 @@ def start(master, size):
             ag_parameters.get_crossover_rate(),
             ag_parameters.get_mutation_rate(),
         )
-        gen_count, population = ag.solve()
+        result, exec_time = ag.solve()
+        gen_count, population = result
         solutions_frame = SolutionsFrame.from_population(solution_window, population)
         solutions_frame.grid(row=0, column=0, padx=10, pady=10)
+        info_list = [
+            f"La génération {gen_count}",
+            f"Fitness moyenne: {population.total_fitness/len(population.individuals):.4f}",
+            f"Temps d'exécution: {exec_time:.4f} seconds",
+        ]
+        info_label = ttk.Label(solution_window, text="\n".join(info_list))
+        info_label.grid(row=1, column=0, padx=5, pady=5)
 
     run = ttk.button = ttk.Button(master, text="Exécuter", command=run)
     run.grid(row=1, column=1, padx=10, pady=10)

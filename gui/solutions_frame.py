@@ -1,4 +1,3 @@
-import textwrap
 from tkinter import CENTER, ttk, NO
 
 
@@ -9,7 +8,6 @@ class SolutionsFrame(ttk.Frame):
             self, columns=("solution", "distance_totale", "fitness")
         )
         self.solutions_table.column("#0", width=0, stretch=NO)
-        print(solution_width)
         self.solutions_table.column(
             "solution", anchor=CENTER, width=solution_width * 2 * 12
         )
@@ -42,7 +40,7 @@ class SolutionsFrame(ttk.Frame):
                 values=(
                     genes,
                     str(solution.distance),
-                    "{:.4f}".format(solution.fitness),
+                    f"{solution.fitness:.4f}",
                 ),
             )
             i += 1
