@@ -63,6 +63,16 @@ class DistancesMatrix(MatrixFrame):
             "Veuillez entrer une distance valide",
         )
 
+    def get_distances_matrix(self):
+        sizey = len(self.cells)
+        sizex = len(self.cells[0])
+        m = [[0] * sizex for _ in range(sizey)]
+        for i in range(sizey):
+            for j in range(sizex):
+                v = self.cells[i][j].get()
+                m[i][j] = int(v) if v else 0
+        return m
+
     @staticmethod
     def is_distance(v):
         if v == "":

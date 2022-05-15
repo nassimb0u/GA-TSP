@@ -35,7 +35,7 @@ class AGParametersFrame(ttk.Frame):
             self.input.grid(row=1, column=0)
 
         def get(self):
-            return self.info.get()
+            return self.input.get()
 
         def _show_error(self, message):
             self.error_label["text"] = message
@@ -61,14 +61,26 @@ class AGParametersFrame(ttk.Frame):
             AGParametersFrame.rate_error_message,
         )
         self.mutation_rate.grid(row=2, column=1)
-        self.pop_size = AGParametersFrame.Entry(
+        self.population_size = AGParametersFrame.Entry(
             self,
             "Taille de la population",
             "20",
             AGParametersFrame.is_size,
             AGParametersFrame.rate_error_message,
         )
-        self.pop_size.grid(row=3, column=1)
+        self.population_size.grid(row=3, column=1)
+
+    def get_crossover_rate(self):
+        v = self.crossover_rate.get()
+        return float(v) if v else 0
+
+    def get_mutation_rate(self):
+        v = self.mutation_rate.get()
+        return float(v) if v else 0
+
+    def get_population_size(self):
+        v = self.population_size.get()
+        return int(v) if v else 0
 
     @staticmethod
     def is_rate(v):
