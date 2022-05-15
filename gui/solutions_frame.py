@@ -32,7 +32,7 @@ class SolutionsFrame(ttk.Frame):
     def from_population(master, population):
         solutions_frame = SolutionsFrame(master, population.ag.order)
         i = 0
-        for solution in population.population:
+        for solution in population.elitism():
             genes = "-".join(map(str, solution.genes))
             solutions_frame.solutions_table.insert(
                 parent="",
