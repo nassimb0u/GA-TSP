@@ -98,4 +98,4 @@ class ComboboxFrame(ttk.Frame):
 
 class MatrixSizeFrame(ComboboxFrame):
     def __init__(self, master, on_validate):
-        super().__init__(master, "Nombre de villes", 1, 15, on_validate)
+        super().__init__(master, "Nombre de villes", 2, 15, on_validate)
