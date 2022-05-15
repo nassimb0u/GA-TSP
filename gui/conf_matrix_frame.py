@@ -1,6 +1,5 @@
 import textwrap
-from tkinter import CENTER, END, Tk, ttk
-import tkinter as tk
+from tkinter import CENTER, END, ttk
 
 
 class ConfMatrixFrame(ttk.Frame):
@@ -118,19 +117,3 @@ class ConfMatrixFrame(ttk.Frame):
         except ValueError:
             return False
         return True
-
-
-root = Tk()
-root.title("TSP avec AG")
-dynamix_matrix = ConfMatrixFrame(
-    root,
-    "Matrice des distances",
-    "Nombre de villes",
-    2,
-    15,
-    "0",
-    ConfMatrixFrame.is_float,
-    "Veuillez entrer un nombre réel",
-)
-dynamix_matrix.grid(row=0, column=0, padx=5, pady=5)
-root.mainloop()
