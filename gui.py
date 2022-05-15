@@ -3,7 +3,7 @@ from tkinter import CENTER, END, Tk, ttk
 import tkinter as tk
 
 
-class DynamicMatrixFrame(ttk.Frame):
+class ConfMatrixFrame(ttk.Frame):
     class SizeFrame(ttk.Frame):
         def __init__(self, master, label, min_size, max_size, command):
             super().__init__(master)
@@ -27,23 +27,23 @@ class DynamicMatrixFrame(ttk.Frame):
         def __init__(
             self,
             master,
-            n,
+            size,
             label,
             default_value=None,
             validator=lambda v: True,
             error_message="",
         ):
             super().__init__(master)
-            label = textwrap.shorten(label, width=6 * n, placeholder="...")
+            label = textwrap.shorten(label, width=6 * size, placeholder="...")
             error_message = textwrap.shorten(
-                error_message, width=6 * n, placeholder="..."
+                error_message, width=6 * size, placeholder="..."
             )
             self.label = ttk.Label(self, text=label)
-            self.label.grid(row=0, column=0, columnspan=n, pady=5)
-            self.cells = [[None] * n for _ in range(n)]
-            self.n = n
+            self.label.grid(row=0, column=0, columnspan=size, pady=5)
+            self.cells = [[None] * size for _ in range(size)]
+            self.size = size
             self.error_label = ttk.Label(self, foreground="red")
-            self.error_label.grid(row=n + 1, column=0, columnspan=n, pady=5)
+            self.error_label.grid(row=size + 1, column=0, columnspan=size, pady=5)
 
             def validator_wrapper(v):
                 if validator(v):
@@ -53,8 +53,8 @@ class DynamicMatrixFrame(ttk.Frame):
                 return False
 
             vcmd = (self.register(validator_wrapper), "%P")
-            for i in range(n):
-                for j in range(n):
+            for i in range(size):
+                for j in range(size):
                     self.cells[i][j] = ttk.Entry(
                         self,
                         justify=CENTER,
@@ -65,13 +65,6 @@ class DynamicMatrixFrame(ttk.Frame):
                     if default_value:
                         self.cells[i][j].insert(END, default_value)
                     self.cells[i][j].grid(row=i + 1, column=j)
-
-        def delete(self):
-            self.label.destroy()
-            self.error_label.destroy()
-            for i in range(self.n):
-                for j in range(self.n):
-                    self.cells[i][j].destroy()
 
         def _show_error(self, message):
             self.error_label["text"] = message
@@ -91,8 +84,8 @@ class DynamicMatrixFrame(ttk.Frame):
         error_message="",
     ):
         super().__init__(master)
-        self.size_frame = DynamicMatrixFrame.SizeFrame(
-            self, size_label, min_size, max_size, self.reload
+        self.size_frame = ConfMatrixFrame.SizeFrame(
+            self, size_label, min_size, max_size, self.show_matrix
         )
         self.size_frame.grid(row=0, column=1, padx=5, pady=5)
         self.matrix_label = matrix_label
@@ -101,12 +94,14 @@ class DynamicMatrixFrame(ttk.Frame):
         self.error_message = error_message
         self.matrix = None
 
-    def reload(self):
-        if self.matrix:
-            self.matrix.delete()
-        self.matrix = DynamicMatrixFrame.MatrixFrame(
+    def show_matrix(self):
+        size = self.size_frame.get_size()
+        self.size_frame.destroy()
+        self.size_frame = None
+        self.matrix = ()
+        self.matrix = ConfMatrixFrame.MatrixFrame(
             self,
-            self.size_frame.get_size(),
+            size,
             self.matrix_label,
             self.default_value,
             self.validator,
@@ -127,14 +122,14 @@ class DynamicMatrixFrame(ttk.Frame):
 
 root = Tk()
 root.title("TSP avec AG")
-dynamix_matrix = DynamicMatrixFrame(
+dynamix_matrix = ConfMatrixFrame(
     root,
     "Matrice des distances",
     "Nombre de villes",
     2,
     15,
     "0",
-    DynamicMatrixFrame.is_float,
+    ConfMatrixFrame.is_float,
     "Veuillez entrer un nombre réel",
 )
 dynamix_matrix.grid(row=0, column=0, padx=5, pady=5)
