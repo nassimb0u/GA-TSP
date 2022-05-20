@@ -4,17 +4,17 @@ from individual import Individual
 
 
 class Population:
-    def __init__(self, ag):
-        self.ag = ag
-        self.individuals = deque(maxlen=ag.pop_size)
+    def __init__(self, ga):
+        self.ga = ga
+        self.individuals = deque(maxlen=ga.population_size)
         self.total_fitness = 0
         self.probas = None
 
     @staticmethod
-    def create_rand(ag):
-        rand_pop = Population(ag)
-        for _ in range(ag.pop_size):
-            rand_pop.insert(Individual.create_rand(ag))
+    def create_rand(ga):
+        rand_pop = Population(ga)
+        for _ in range(ga.population_size):
+            rand_pop.insert(Individual.create_rand(ga))
         return rand_pop
 
     def __len__(self):
@@ -30,7 +30,7 @@ class Population:
         self.probas = [e.fitness / self.total_fitness for e in self.individuals]
 
     def roulette_selection(self):
-        return self.ag.rng.choice(self.individuals, p=self.probas)
+        return self.ga.rng.choice(self.individuals, p=self.probas)
 
     def select_pair(self):
         return self.roulette_selection(), self.roulette_selection()

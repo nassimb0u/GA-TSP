@@ -20,26 +20,25 @@ class AG:
     def __init__(
         self,
         graph,
-        population_size,
+        population_size=20,
         crossover_rate=0.8,
         mutation_rate=1e-3,
         stagnation_metric=5,
     ):
-        self.g = graph
-        self.pop_size = population_size
+        self.graph = graph
+        self.population_size = population_size
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
         self.stagnation_metric = stagnation_metric
         self.rng = default_rng()
-        self.init_pop = Population.create_rand(self)
 
     @property
     def adj_mat(self):
-        return self.g.adj_mat
+        return self.graph.adj_mat
 
     @property
     def order(self):
-        return self.g.order
+        return self.graph.order
 
     def crossover_prob(self):
         return self.rng.random() < self.crossover_rate
@@ -56,7 +55,7 @@ class AG:
 
     @timer
     def solve(self):
-        gen = self.init_pop
+        gen = Population.create_rand(self)
         counter = None
         gen_count = 0
         while True:

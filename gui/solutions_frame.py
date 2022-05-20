@@ -28,7 +28,7 @@ class SolutionsFrame(ttk.Frame):
 
     @staticmethod
     def from_population(master, population):
-        solutions_frame = SolutionsFrame(master, population.ag.order)
+        solutions_frame = SolutionsFrame(master, population.ga.order)
         i = 0
         for solution in population.elitism():
             genes = "-".join(map(str, solution.genes))
